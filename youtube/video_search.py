@@ -27,8 +27,8 @@ def youtube_video_by_id(video_id):
 def find_video_ids_by_stem(stem):
     client = MongoClient()
     db = client['youtubedb']
-    collection = db.videos
-    video_ids = collection.find({"stem": stem}).distinct("videoIds")
+    collection = db['searchResults']
+    video_ids = collection.find({"stem": stem}).distinct("video_ids")
     return video_ids
 
 
