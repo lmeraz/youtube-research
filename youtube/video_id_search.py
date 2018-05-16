@@ -37,7 +37,7 @@ def build_search_result(stem, query, response):
 
     search_result = {
         'meta': meta,
-        'video_ids': video_ids,
+        'videoIds': video_ids,
         'response': response,
         'query': query,
         'stem': stem,
