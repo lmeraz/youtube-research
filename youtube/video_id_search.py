@@ -26,7 +26,7 @@ def youtube_search_video_id(q, part='id', typ='video', mx=50):
     return response
 
 
-def build_search_result(query, response):
+def build_search_result(stem, query, response):
     meta = response.get('pageInfo', {})
     results = response.get('items', [])
     video_ids = []
@@ -40,6 +40,7 @@ def build_search_result(query, response):
         'video_ids': video_ids,
         'response': response,
         'query': query,
+        'stem': stem,
     }
     return search_result
 
@@ -67,7 +68,7 @@ def main(stem):
     for suggestion in suggestions:
         try:
             response = youtube_search_video_id(suggestion)
-            search_result = build_search_result(suggestion, response)
+            search_result = build_search_result(stem, suggestion, response)
             print(search_result)
             add_search_result(search_result)
         except HttpError as e:
