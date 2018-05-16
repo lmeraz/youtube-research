@@ -10,7 +10,7 @@ YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 
 
-def youtube_search_ids(q, part='id', typ='video', mx=50):
+def youtube_search_video_id(q, part='id', typ='video', mx=50):
     youtube = build(
         YOUTUBE_API_SERVICE_NAME,
         YOUTUBE_API_VERSION,
@@ -52,11 +52,11 @@ def get_suggestions(stem):
     return suggestions
 
 
-def save_youtube_search_result(obj):
+def add_search_result(search_result):
     client = MongoClient()
     db = client['youtubedb']
     collection = db['searchResults']
-    collection.insert_one(obj)
+    collection.insert_one(search_result)
     return
 
 
@@ -66,10 +66,10 @@ def main(stem):
     suggestions = get_suggestions(stem)
     for suggestion in suggestions:
         try:
-            response = youtube_search_ids(suggestion)
+            response = youtube_search_video_id(suggestion)
             search_result = build_search_result(suggestion, response)
             print(search_result)
-            save_youtube_search_result(search_result)
+            add_search_result(search_result)
         except HttpError as e:
             print(f'An HTTP error {e.resp.status} occurred:\n{e.content}\n')
 
